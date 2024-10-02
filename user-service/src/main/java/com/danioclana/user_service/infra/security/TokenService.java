@@ -1,4 +1,4 @@
-package com.danioclana.user_service.services;
+package com.danioclana.user_service.infra.security;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

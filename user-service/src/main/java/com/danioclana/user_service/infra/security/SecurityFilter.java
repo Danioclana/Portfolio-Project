@@ -13,7 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.danioclana.user_service.models.User;
 import com.danioclana.user_service.repositories.UserRepository;
-import com.danioclana.user_service.services.TokenService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
