@@ -29,7 +29,6 @@ public class MailController {
 
         mailSender.send(message);
 
-
         return ResponseEntity.ok().body("Mail sent to " + mailDTO.to());
     }
     
