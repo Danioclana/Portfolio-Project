@@ -28,7 +28,7 @@ services:
     networks:
       - network
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://eurela-service:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
     healthcheck:
       test: ["CMD-SHELL", "curl -s -o /dev/null -w '%{http_code}' http://eureka-server:8761/actuator/health || exit 1"]
       interval: 10s
@@ -47,7 +47,7 @@ services:
       eureka-server: 
         condition: service_healthy
     environment:
-      - eureka.client.serviceUrl.defaultZone=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+      - eureka.client.serviceUrl.defaultZone=http://eurela-service:8761/eureka/
       - spring.cloud.config.server.git.uri=${SPRING_CLOUD_CONFIG_SERVER_GIT_URI}
       - spring.cloud.config.server.git.default-label=${SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT_LABEL}
       - spring.cloud.config.server.git.username=${SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME}
