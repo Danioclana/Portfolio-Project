@@ -47,7 +47,7 @@ services:
       eureka-server: 
         condition: service_healthy
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://eurela-service:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
       - spring.cloud.config.server.git.uri=${SPRING_CLOUD_CONFIG_SERVER_GIT_URI}
       - spring.cloud.config.server.git.default-label=${SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT_LABEL}
       - spring.cloud.config.server.git.username=${SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME}
@@ -59,7 +59,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
-      
+
   user-service:
     image: user-service:latest
     build: ./user-service
@@ -75,7 +75,7 @@ services:
       user-db:
         condition: service_healthy
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://eurela-service:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
       - spring.config.import=optional:configserver:http://config-server:8888
 
   email-service:
@@ -91,7 +91,7 @@ services:
       eureka-server:
         condition: service_healthy
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://eurela-service:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
       - spring.config.import=optional:configserver:http://config-server:8888
 
 networks:
