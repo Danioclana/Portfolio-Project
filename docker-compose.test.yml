@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+
+  user-service-test:
+    build: ./user-service
+    container_name: user-service_test
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
+      - spring.config.import=optional:configserver:http://config-server:8888
+    depends_on:
+      config-server: 
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      user-db:
+        condition: service_healthy
+    networks:
+      - network
+    command: mvn test -X
+
+  email-service-test:
+    build: ./email-service
+    container_name: email-service_test
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
+      - spring.config.import=optional:configserver:http://config-server:8888
+    depends_on:
+      config-server: 
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    networks:
+      - network
+    command: mvn test -X
