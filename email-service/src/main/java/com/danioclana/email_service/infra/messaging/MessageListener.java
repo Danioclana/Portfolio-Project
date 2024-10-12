@@ -2,7 +2,6 @@ package com.danioclana.email_service.infra.messaging;
 
 import java.util.Map;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,13 +25,13 @@ public class MessageListener {
             String to = message.get("to");
             String subject = message.get("subject");
             String content = message.get("content");
-            sendEmail(to, subject, content);
+            send(to, subject, content);
         } catch (Exception e) {
-            LoggerFactory.getLogger(MessageListener.class).error("Failed to process email message", e);
+            throw new RuntimeException("Error while processing message");
         }
     }
 
-    private void sendEmail(String to, String subject, String content) {
+    private void send (String to, String subject, String content) {
         MailDTO mailDTO = new MailDTO(to, subject, content);
         mailService.sendMail(mailDTO);
     }

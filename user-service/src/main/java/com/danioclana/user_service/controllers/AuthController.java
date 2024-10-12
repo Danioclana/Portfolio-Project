@@ -12,15 +12,21 @@ import com.danioclana.user_service.dtos.LoginDTO;
 import com.danioclana.user_service.dtos.UserDTO;
 import com.danioclana.user_service.infra.security.TokenService;
 import com.danioclana.user_service.models.User;
-import com.danioclana.user_service.services.UserService;
+import com.danioclana.user_service.repositories.UserRepository;
+import com.danioclana.user_service.services.EmailService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+    
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -28,8 +34,8 @@ public class AuthController {
     private TokenService tokenService;
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        User user = userService.findByEmail(loginDTO.email());
+    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO) {
+        User user = userRepository.findByEmail(loginDTO.email());
         if(user == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -38,6 +44,8 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Invalid password");
         }
 
+        emailService.login(user.getEmail());
+
         String token = tokenService.generateToken(user);
 
         return ResponseEntity.ok().body(token);
@@ -45,9 +53,9 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> register(@RequestBody @Valid UserDTO userDTO) {
 
-        if(userService.existsByEmail(userDTO.email())) {
+        if(userRepository.existsByEmail(userDTO.email())) {
             return ResponseEntity.badRequest().body("Email already in use");
         }
 
@@ -56,7 +64,8 @@ public class AuthController {
         user.setName(userDTO.name());
         user.setPassword(passwordEncoder.encode(userDTO.password()));
 
-        userService.save(user);
+        userRepository.save(user);
+        emailService.welcome(user.getEmail());
 
         return ResponseEntity.ok().body("User created");
     }

@@ -1,20 +1,16 @@
 package com.danioclana.email_service.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public record MailDTO(
+    @NotNull(message = "To cannot be empty")
+    @NotBlank(message = "To cannot be empty")
     String to,
+    @NotNull(message = "Subject cannot be empty")
+    @NotBlank(message = "Subject cannot be empty")
     String subject,
+    @NotNull(message = "Content cannot be empty")
+    @NotBlank(message = "Content cannot be empty")
     String content
-) {
-    public MailDTO {
-        if (to == null || to.isBlank()) {
-             // TODO: personalize exception
-            throw new IllegalArgumentException("To cannot be empty");
-        }
-        if (subject == null || subject.isBlank()) {
-            throw new IllegalArgumentException("Subject cannot be empty");
-        }
-        if (content == null || content.isBlank()) {
-            throw new IllegalArgumentException("Content cannot be empty");
-        }
-    }
-}
+) {}
