@@ -9,7 +9,7 @@ Antes de iniciar, certifique-se de ter as seguintes ferramentas instaladas:
 
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker Compose](https://docs.docker.com/compose/install/)
-- Acesso ao repositório com as configurações dos serviços `user-service` e `email-service` (consultar os links abaixo)
+- Criaçao do repositório com as configurações dos serviços `user-service` e `email-service` 
 
 ### Configuração do `.env`
 
@@ -25,20 +25,49 @@ Edite o arquivo `.env` com as informações corretas, como `POSTGRES_USER`, `POS
 
 Este projeto depende das configurações externas armazenadas no Git. Certifique-se de ter acesso aos repositórios de configuração:
 
-- [Configurações do `user-service`](https://github.com/SeuUsuario/ConfigUserService)
-- [Configurações do `email-service`](https://github.com/SeuUsuario/ConfigEmailService)
+- [ `Exemplo de user-service.properties`]
 
-### Clonar Repositórios de Configuração
+#### Postgres Database Config
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 
-Você precisa clonar os repositórios de configuração antes de iniciar os serviços:
+#### RabbitMQ Configs
+spring.rabbitmq.host=rabbitmq
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=
+spring.rabbitmq.password=
 
-```bash
-# Clonar o repositório de configurações para o user-service
-git clone https://github.com/SeuUsuario/ConfigUserService.git user-service-config
+#### Nome da fila para envio de mensagens
+spring.rabbitmq.template.default-receive-queue=
 
-# Clonar o repositório de configurações para o email-service
-git clone https://github.com/SeuUsuario/ConfigEmailService.git email-service-config
-```
+#### JWT Pass
+security.token.secret=
+
+- [`Exemplo de email-service.properties`]
+
+#### MailTrap Configuration
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+#### RabbitMq Config
+spring.rabbitmq.host=rabbitmq
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=
+spring.rabbitmq.password=
+
+#### Nome da fila para escuta das mensagens
+spring.rabbitmq.listener.simple.queue.name=
+
+
+Complete as configurações com as credenciais corretas.
 
 ## Executando os Ambientes
 

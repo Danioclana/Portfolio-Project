@@ -84,5 +84,5 @@ public class UserController {
         return ResponseEntity.ok().body("Password reset successfully");
     }
 
-
+    // TODO: Fix the update and reset password methods 
 }
