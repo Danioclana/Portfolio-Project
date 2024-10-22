@@ -11,5 +11,6 @@ import com.danioclana.user_service.models.User;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     boolean existsByEmail(String email);
+    User findByEmail(String email);
     
 }

@@ -1,17 +1,14 @@
-package com.danioclana.config_server;
+package com.danioclana.email_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-@EnableConfigServer
 @EnableDiscoveryClient
-public class ConfigServerApplication {
-
+public class EmailServiceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(ConfigServerApplication.class, args);
+		SpringApplication.run(EmailServiceApplication.class, args);
 	}
 
 }
