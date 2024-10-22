@@ -1,16 +1,13 @@
 package com.danioclana.user_service.dtos;
 
-public record LoginDTO(
-    String email,
-    String password
-) {
-    public LoginDTO {
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Email cannot be null or empty");
-        }
-        if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
-        }
-    }
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-}
+public record LoginDTO(
+    @NotNull(message = "Email cannot be null or empty")
+    @NotBlank(message = "Email cannot be null or empty")
+    String email,
+    @NotNull(message = "Password cannot be null or empty")
+    @NotBlank(message = "Password cannot be null or empty")
+    String password
+) {}
