@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,9 @@ public class UserController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -76,7 +80,7 @@ public class UserController {
 
         User user = userRepository.findById(id).get();
 
-        user.setPassword(passwordResetDTO.newPassword());
+        user.setPassword(passwordEncoder.encode(passwordResetDTO.newPassword()));
         userRepository.save(user);
 
         emailService.passwordChanged(user.getEmail());

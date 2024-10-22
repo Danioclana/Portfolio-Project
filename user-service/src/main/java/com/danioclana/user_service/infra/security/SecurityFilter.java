@@ -31,15 +31,26 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) 
         throws IOException, ServletException{
-        var token = this.recoverToken(request);
+   
+        var token = recoverToken(request);
+
+        if (token == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Cabeçalho de autorização ausente.");
+            return; 
+        }
+
         var login = tokenService.validateToken(token);
 
-        if(login != null) {
-            User user = userRepository.findByEmail(login);
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (login == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token inválido.");
+            return; 
         }
+
+        User user = userRepository.findByEmail(login);
+        var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         filterChain.doFilter(request, response);
     }
 
