@@ -1,5 +1,6 @@
 package com.danioclana.user_service.exceptions;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.servlet.ServletException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -33,6 +36,16 @@ public class GlobalExceptionHandler {
                 errorMessage = partes[1].trim(); 
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
+
+        @ExceptionHandler(IOException.class)
+        public ResponseEntity<String> handleIOException(IOException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro de I/O: " + ex.getMessage());
+        }
+
+        @ExceptionHandler (ServletException.class)
+        public ResponseEntity<String> handleServletException(ServletException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro de Servlet: " + ex.getMessage());
         }
 
         @ExceptionHandler(Exception.class)

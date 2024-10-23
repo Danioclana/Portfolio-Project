@@ -34,17 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
    
         var token = recoverToken(request);
 
-        if (token == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Cabeçalho de autorização ausente.");
-            return; 
-        }
-
         var login = tokenService.validateToken(token);
-
-        if (login == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token inválido.");
-            return; 
-        }
 
         User user = userRepository.findByEmail(login);
         var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
